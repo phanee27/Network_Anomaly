@@ -22,6 +22,7 @@ ENV/
 
 # Environment files
 .env
+data
 .env.*
 
 # IDE/editor files
