@@ -27,7 +27,7 @@ ENV/
 # IDE/editor files
 .vscode/
 .idea/
-
+graphify-out
 # Build / temp artifacts
 build/
 dist/
