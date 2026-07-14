@@ -33,6 +33,30 @@ services:
       timeout: 5s
       retries: 10
 
+  api:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      RCA_PG_HOST: postgres
+      RCA_PG_USER: ${RCA_PG_USER:-rca}
+      RCA_PG_DB: ${RCA_PG_DB:-rca}
+      RCA_PG_PASSWORD: ${RCA_PG_PASSWORD:?set RCA_PG_PASSWORD in .env}
+      RCA_NEO4J_URI: bolt://neo4j:7687
+      RCA_NEO4J_PASSWORD: ${RCA_NEO4J_PASSWORD:-neo4j}
+      RCA_TOPOLOGY_BACKEND: ${RCA_TOPOLOGY_BACKEND:-networkx}
+      RCA_LLM_ENABLED: ${RCA_LLM_ENABLED:-false}
+      RCA_LLM_BASE_URL: ${RCA_LLM_BASE_URL:-http://host.docker.internal:11434/v1}
+      RCA_LLM_MODEL: ${RCA_LLM_MODEL:-qwen2.5:3b}
+      RCA_DATA_ROOT: /data
+      RCA_ARTIFACTS_ROOT: /artifacts
+    volumes:
+      - ./data:/data
+      - ./artifacts:/artifacts
+    ports:
+      - "${RCA_API_PORT:-8000}:8000"
+
 volumes:
   pgdata:
   neo4jdata:
